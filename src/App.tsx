@@ -2,8 +2,12 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Index from "./pages/Index";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { AppLayout } from "./components/layout/AppLayout";
+import Login from "./pages/auth/Login";
+import Register from "./pages/auth/Register";
+import Dashboard from "./pages/Dashboard";
+import QRCodes from "./pages/QRCodes";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -15,8 +19,27 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Index />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+          {/* Redirect root to dashboard */}
+          <Route path="/" element={<Navigate to="/dashboard" replace />} />
+          
+          {/* Auth routes */}
+          <Route path="/auth/login" element={<Login />} />
+          <Route path="/auth/register" element={<Register />} />
+          
+          {/* App routes with layout */}
+          <Route path="/" element={<AppLayout />}>
+            <Route path="dashboard" element={<Dashboard />} />
+            <Route path="qr-codes" element={<QRCodes />} />
+            {/* Placeholder routes for other pages */}
+            <Route path="create" element={<div className="p-6">Create QR Code - Coming Soon</div>} />
+            <Route path="analytics" element={<div className="p-6">Analytics - Coming Soon</div>} />
+            <Route path="users" element={<div className="p-6">User Management - Coming Soon</div>} />
+            <Route path="billing" element={<div className="p-6">Billing - Coming Soon</div>} />
+            <Route path="plans" element={<div className="p-6">View Plans - Coming Soon</div>} />
+            <Route path="help" element={<div className="p-6">Help & Support - Coming Soon</div>} />
+          </Route>
+          
+          {/* Catch-all route */}
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
