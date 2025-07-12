@@ -8,6 +8,10 @@ import Login from "./pages/auth/Login";
 import Register from "./pages/auth/Register";
 import Dashboard from "./pages/Dashboard";
 import QRCodes from "./pages/QRCodes";
+import CreateQR from "./pages/CreateQR";
+import Analytics from "./pages/Analytics";
+import Billing from "./pages/Billing";
+import Plans from "./pages/Plans";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -30,12 +34,12 @@ const App = () => (
           <Route path="/" element={<AppLayout />}>
             <Route path="dashboard" element={<Dashboard />} />
             <Route path="qr-codes" element={<QRCodes />} />
-            {/* Placeholder routes for other pages */}
-            <Route path="create" element={<div className="p-6">Create QR Code - Coming Soon</div>} />
-            <Route path="analytics" element={<div className="p-6">Analytics - Coming Soon</div>} />
+            {/* Feature routes */}
+            <Route path="create" element={<CreateQR />} />
+            <Route path="analytics" element={<Analytics />} />
             <Route path="users" element={<div className="p-6">User Management - Coming Soon</div>} />
-            <Route path="billing" element={<div className="p-6">Billing - Coming Soon</div>} />
-            <Route path="plans" element={<div className="p-6">View Plans - Coming Soon</div>} />
+            <Route path="billing" element={<Billing />} />
+            <Route path="plans" element={<Plans />} />
             <Route path="help" element={<div className="p-6">Help & Support - Coming Soon</div>} />
           </Route>
           
