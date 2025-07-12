@@ -3,6 +3,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
+import { Link } from "react-router-dom";
 
 export default function Dashboard() {
   const stats = [
@@ -55,9 +56,11 @@ export default function Dashboard() {
           <h1 className="text-3xl font-bold text-foreground">Dashboard</h1>
           <p className="text-muted-foreground">Welcome back! Here's your QR code overview.</p>
         </div>
-        <Button className="bg-gradient-primary hover:opacity-90 transition-opacity">
-          <Plus className="w-4 h-4 mr-2" />
-          Create QR Code
+        <Button asChild className="bg-gradient-primary hover:opacity-90 transition-opacity">
+          <Link to="/create-qr">
+            <Plus className="w-4 h-4 mr-2" />
+            Create QR Code
+          </Link>
         </Button>
       </div>
 
@@ -96,7 +99,7 @@ export default function Dashboard() {
             <div className="space-y-4">
               {recentActivity.map((item, index) => (
                 <div key={index} className="flex items-center justify-between p-4 rounded-lg bg-muted/30 hover:bg-muted/50 transition-colors">
-                  <div className="flex items-center gap-3">
+                  <Link to="/qrcodes" className="flex items-center gap-3 flex-1">
                     <div className="w-10 h-10 bg-gradient-primary rounded-lg flex items-center justify-center">
                       <QrCode className="w-5 h-5 text-white" />
                     </div>
@@ -104,7 +107,7 @@ export default function Dashboard() {
                       <h4 className="font-medium text-foreground">{item.name}</h4>
                       <p className="text-sm text-muted-foreground">{item.scans} scans</p>
                     </div>
-                  </div>
+                  </Link>
                   <div className="flex items-center gap-2">
                     <Badge variant={item.type === "Dynamic" ? "default" : "secondary"}>
                       {item.type}
@@ -137,21 +140,25 @@ export default function Dashboard() {
             <div className="p-4 bg-gradient-primary rounded-lg text-white">
               <h3 className="font-semibold">Premium Plan</h3>
               <p className="text-sm opacity-90">Valid until Dec 31, 2024</p>
-              <Button variant="secondary" size="sm" className="mt-3 w-full">
-                Upgrade Plan
+              <Button asChild variant="secondary" size="sm" className="mt-3 w-full">
+                <Link to="/plans">Upgrade Plan</Link>
               </Button>
             </div>
 
             <div className="space-y-2">
               <h4 className="font-medium text-foreground">Quick Actions</h4>
               <div className="space-y-2">
-                <Button variant="outline" size="sm" className="w-full justify-start">
-                  <BarChart3 className="w-4 h-4 mr-2" />
-                  View Analytics
+                <Button asChild variant="outline" size="sm" className="w-full justify-start">
+                  <Link to="/analytics">
+                    <BarChart3 className="w-4 h-4 mr-2" />
+                    View Analytics
+                  </Link>
                 </Button>
-                <Button variant="outline" size="sm" className="w-full justify-start">
-                  <Users className="w-4 h-4 mr-2" />
-                  Manage Users
+                <Button asChild variant="outline" size="sm" className="w-full justify-start">
+                  <Link to="/users">
+                    <Users className="w-4 h-4 mr-2" />
+                    Manage Users
+                  </Link>
                 </Button>
               </div>
             </div>

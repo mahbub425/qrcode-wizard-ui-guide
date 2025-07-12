@@ -15,10 +15,35 @@ import { SidebarTrigger } from "@/components/ui/sidebar";
 import { Badge } from "@/components/ui/badge";
 
 export function TopNavigation() {
-  const [notifications] = useState(3); // Mock notification count
+  const initialNotifications = [
+    { type: "plan", message: "Your Premium Plan expires on Dec 31, 2024.", time: "2 days left" },
+    { type: "user", message: "User John Doe added.", time: "Just now" },
+    { type: "user", message: "Role 'Admin' assigned to Jane Smith.", time: "5 min ago" },
+    { type: "user", message: "Invitation accepted by Alex Brown.", time: "1 hour ago" },
+    { type: "user", message: "User Emily Clark removed.", time: "Yesterday" },
+  ];
+  const [showNotifications, setShowNotifications] = useState(false);
+  const [notifications, setNotifications] = useState(initialNotifications);
+  const [unreadCount, setUnreadCount] = useState(initialNotifications.length);
+
+  // Simulate receiving a new notification
+  const addNotification = (note) => {
+    setNotifications((prev) => [note, ...prev]);
+    setUnreadCount((prev) => prev + 1);
+  };
+
+  // Example: Call addNotification to simulate a new notification
+  // addNotification({ type: "user", message: "New user invited.", time: "Now" });
+
+  const handleBellClick = () => {
+    setShowNotifications((v) => !v);
+    if (!showNotifications && unreadCount > 0) {
+      setUnreadCount(0); // Mark notifications as read when opening dropdown
+    }
+  };
 
   return (
-    <header className="h-16 bg-card border-b flex items-center justify-between px-6">
+    <header className="h-16 bg-card border-b flex items-center justify-between px-6 sticky top-0 z-30">
       <div className="flex items-center gap-4">
         <SidebarTrigger />
         <div className="relative">
@@ -32,17 +57,44 @@ export function TopNavigation() {
 
       <div className="flex items-center gap-4">
         {/* Notifications */}
-        <Button variant="ghost" size="icon" className="relative">
-          <Bell className="w-5 h-5" />
-          {notifications > 0 && (
-            <Badge 
-              variant="destructive" 
-              className="absolute -top-2 -right-2 w-5 h-5 p-0 flex items-center justify-center text-xs"
-            >
-              {notifications}
-            </Badge>
+        <div className="relative">
+          <Button variant="ghost" size="icon" className="relative" onClick={handleBellClick}>
+            <Bell className="w-5 h-5" />
+            {unreadCount > 0 && (
+              <Badge 
+                variant="destructive" 
+                className="absolute -top-2 -right-2 w-5 h-5 p-0 flex items-center justify-center text-xs"
+              >
+                {unreadCount}
+              </Badge>
+            )}
+          </Button>
+          {showNotifications && (
+            <div className="absolute right-0 mt-2 w-80 bg-background border border-muted rounded-lg shadow-lg z-40">
+              <div className="p-4 border-b border-muted font-semibold text-lg flex justify-between items-center">
+                Notifications
+                <Button variant="ghost" size="sm" onClick={() => setShowNotifications(false)}>
+                  Close
+                </Button>
+              </div>
+              <ul className="max-h-64 overflow-y-auto">
+                {notifications.length === 0 ? (
+                  <li className="p-4 text-muted-foreground">No notifications</li>
+                ) : (
+                  notifications.map((note, idx) => (
+                    <li key={idx} className="flex items-start gap-2 p-4 hover:bg-muted/20 transition-colors">
+                      <span className={`w-2 h-2 rounded-full mt-2 ${note.type === 'plan' ? 'bg-yellow-500' : 'bg-blue-500'}`}></span>
+                      <div>
+                        <div className="text-sm text-foreground">{note.message}</div>
+                        <div className="text-xs text-muted-foreground mt-1">{note.time}</div>
+                      </div>
+                    </li>
+                  ))
+                )}
+              </ul>
+            </div>
           )}
-        </Button>
+        </div>
 
         {/* Profile Dropdown */}
         <DropdownMenu>
